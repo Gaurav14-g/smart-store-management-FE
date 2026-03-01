@@ -5,7 +5,7 @@ import useApi from '../../hooks/useApi';
 import { SalesReport } from '../../models';
 
 const SalesReports = () => {
-  const { Get, getAPI } = useApi();
+  const { Get } = useApi();
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [report, setReport] = useState<SalesReport | null>(null);
@@ -19,11 +19,10 @@ const SalesReports = () => {
   const fetchReport = async () => {
     setLoading(true);
     try {
-      let url = getAPI('salesReport');
       const params = [];
       if (startDate) params.push(`start_date=${startDate}`);
       if (endDate) params.push(`end_date=${endDate}`);
-      if (params.length > 0) url += `?${params.join('&')}`;
+      const url = params.length > 0 ? `salesReport?${params.join('&')}` : 'salesReport';
 
       const response = await Get(url);
       setReport(response);
