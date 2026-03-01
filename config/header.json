@@ -1,0 +1,27 @@
+{
+  "roleBased": {
+    "isRoleBased": false
+  },
+  "menu": {
+    "superuser": [
+      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2" },
+      { "label": "Users", "url": "/users", "icon": "people" },
+      { "label": "Components", "url": "/components", "icon": "grid" }
+    ],
+    "client": [
+      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2" }
+    ],
+    "qa_engineer": [
+      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2" }
+    ],
+    "frontend_dev": [
+      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2" }
+    ],
+    "backend_dev": [
+      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2" }
+    ],
+    "hum_lead": [
+      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2" }
+    ]
+  }
+}

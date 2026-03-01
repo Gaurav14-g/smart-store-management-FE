@@ -1,0 +1,22 @@
+{
+  "api": {
+    "host": "http://127.0.0.1:8000",
+    "_host": "http://api-ontime.humbingo.in",
+    "_wsHost": "ws://api-ontime.humbingo.in",
+    "wsHost": "ws://127.0.0.1:8000",
+    "token": "/auth/token/",
+    "refreshToken": "/auth/token/refresh/",
+    "users": "/api/v1/user/",
+    "register": "/api/v1/user/",
+    "permission": "/api/v1/role/",
+    "permissions": "/api/v1/permission/",
+    "clients": "/api/v1/user/clients/",
+    "isSuperUser": "/api/v1/isSuperUser/",
+    "product": "/api/v1/product/",
+    "customer": "/api/v1/customer/",
+    "bill": "/api/v1/bill/",
+    "salesReport": "/api/v1/bill/sales-report/",
+    "statistics": "/api/v1/statistics/"
+  },
+  "checkSuperUser": false
+}
