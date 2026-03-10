@@ -6,7 +6,7 @@ interface NumberInputProps {
   required?: boolean;
   min?: number;
   max?: number;
-  step?: number;
+  step?: number | string;
   className?: string;
   id?: string;
 }

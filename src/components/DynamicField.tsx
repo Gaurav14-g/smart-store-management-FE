@@ -75,6 +75,7 @@ const DynamicField: React.FC<DynamicFieldProps> = ({ field, defaultValue, handle
           required={field.required}
           min={field.min}
           max={field.max}
+          step={field.step}
           id={field.name}
         />
       );

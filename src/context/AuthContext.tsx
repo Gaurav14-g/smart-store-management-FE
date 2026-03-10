@@ -161,8 +161,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           console.error('Token refresh failed:', error);
           logOutUser("Session expired. Please login again.");
         }
-      } else if (!loading) {
-        logOutUser();
+      } else if (!loading && !authToken) {
+        // Only logout if not loading and no token exists
+        const isAuth = localStorage.getItem('isAuthenticated');
+        if (isAuth === 'true') {
+          logOutUser();
+        }
       }
 
       if (loading) {

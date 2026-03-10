@@ -32,8 +32,12 @@ export default function Dashboard() {
     try {
       const response = await Get('statistics');
       setStats(response);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching statistics:', error);
+      if (error.response?.status !== 401) {
+        // Don't show error for 401 as useApi handles logout
+        console.error('Failed to load dashboard statistics');
+      }
     } finally {
       setLoading(false);
     }
