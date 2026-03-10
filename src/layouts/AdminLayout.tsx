@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
+import VoiceCommandButton from '../components/VoiceCommandButton';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </main>
       </div>
       <Footer />
+      <VoiceCommandButton />
     </div>
   );
 }

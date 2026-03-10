@@ -11,6 +11,7 @@ import Products from './pages/admin/Products';
 import Customers from './pages/admin/Customers';
 import Billing from './pages/admin/Billing';
 import SalesReports from './pages/admin/SalesReports';
+import VoiceCommands from './pages/admin/VoiceCommands';
 import NotFound from './pages/NotFound';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -90,6 +91,14 @@ function App() {
         element={
           <PrivateRoute>
             <SalesReports />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/voice-commands"
+        element={
+          <PrivateRoute>
+            <VoiceCommands />
           </PrivateRoute>
         }
       />

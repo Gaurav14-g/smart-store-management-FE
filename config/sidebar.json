@@ -9,6 +9,7 @@
       { "label": "Customers", "url": "/customers", "icon": "person-lines-fill", "section": "Store" },
       { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" },
       { "label": "Sales Reports", "url": "/sales-reports", "icon": "graph-up", "section": "Operations" },
+      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic", "section": "Operations" },
       { "label": "Users", "url": "/users", "icon": "people", "section": "Management" },
       { "label": "Roles", "url": "/roles", "icon": "shield-lock", "section": "Management" }
     ],
@@ -18,6 +19,7 @@
       { "label": "Customers", "url": "/customers", "icon": "person-lines-fill", "section": "Store" },
       { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" },
       { "label": "Sales Reports", "url": "/sales-reports", "icon": "graph-up", "section": "Operations" },
+      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic", "section": "Operations" },
       { "label": "Users", "url": "/users", "icon": "people", "section": "Management" },
       { "label": "Roles", "url": "/roles", "icon": "shield-lock", "section": "Management" }
     ],
@@ -25,13 +27,15 @@
       { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2", "section": "Main" },
       { "label": "Products", "url": "/products", "icon": "box-seam", "section": "Store" },
       { "label": "Customers", "url": "/customers", "icon": "person-lines-fill", "section": "Store" },
-      { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" }
+      { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" },
+      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic", "section": "Operations" }
     ],
     "backoffice": [
       { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2", "section": "Main" },
       { "label": "Products", "url": "/products", "icon": "box-seam", "section": "Store" },
       { "label": "Customers", "url": "/customers", "icon": "person-lines-fill", "section": "Store" },
-      { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" }
+      { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" },
+      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic", "section": "Operations" }
     ]
   }
 }

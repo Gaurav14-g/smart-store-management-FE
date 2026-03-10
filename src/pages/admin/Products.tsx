@@ -1,7 +1,18 @@
 import AdminLayout from '../../layouts/AdminLayout';
 import CrudManager from '../../components/CrudManager';
+import VoiceCommandButton from '../../components/VoiceCommandButton';
 
 const Products = () => {
+  const voiceCommands = [
+    {
+      command: 'add product',
+      action: () => alert('Click the "Add Product" button to create a new product')
+    },
+    {
+      command: 'check stock',
+      action: (data: any) => alert(`Low Stock Items: ${data.low_stock_count}\n${data.products.map((p: any) => `${p.name}: ${p.quantity}`).join('\n')}`)
+    }
+  ];
 
   const dataSchema = {
     api: 'product',
@@ -33,7 +44,7 @@ const Products = () => {
         updateFormTitle="Update Product"
         actionBtnName="Add Product"
       />
-
+      <VoiceCommandButton commands={voiceCommands} />
     </AdminLayout>
   );
 };

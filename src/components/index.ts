@@ -69,3 +69,4 @@ export { default as CheckboxGroup } from './CheckboxGroup';
 export { default as PrivateRoute } from './PrivateRoute';
 export { default as Auth } from './Auth';
 export { default as CrudManager } from './CrudManager';
+export { default as VoiceCommandButton } from './VoiceCommandButton';
