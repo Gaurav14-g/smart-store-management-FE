@@ -122,9 +122,12 @@ export default function VoiceCommandButton({ commands }: VoiceCommandButtonProps
   };
 
   useEffect(() => {
-    if (autoStartRef.current) {
+    if (autoStartRef.current && SpeechRecognition) {
       autoStartRef.current = false;
-      const timer = setTimeout(() => startListening(), 500);
+      const timer = setTimeout(() => {
+        console.log('Auto-starting voice recognition...');
+        startListening();
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, []);

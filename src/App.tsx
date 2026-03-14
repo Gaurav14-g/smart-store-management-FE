@@ -9,9 +9,11 @@ import Roles from './pages/admin/Roles';
 import Clients from './pages/admin/Clients';
 import Products from './pages/admin/Products';
 import Customers from './pages/admin/Customers';
+import CustomerAnalytics from './pages/admin/CustomerAnalytics';
 import Billing from './pages/admin/Billing';
 import SalesReports from './pages/admin/SalesReports';
 import VoiceCommands from './pages/admin/VoiceCommands';
+import ProductScan from './pages/admin/ProductScan';
 import NotFound from './pages/NotFound';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -79,6 +81,14 @@ function App() {
         }
       />
       <Route
+        path="/customer-analytics"
+        element={
+          <PrivateRoute>
+            <CustomerAnalytics />
+          </PrivateRoute>
+        }
+      />
+      <Route
         path="/billing"
         element={
           <PrivateRoute>
@@ -99,6 +109,14 @@ function App() {
         element={
           <PrivateRoute>
             <VoiceCommands />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/product/scan/:barcode"
+        element={
+          <PrivateRoute>
+            <ProductScan />
           </PrivateRoute>
         }
       />

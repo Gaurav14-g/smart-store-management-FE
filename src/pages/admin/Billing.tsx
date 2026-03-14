@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import AdminLayout from '../../layouts/AdminLayout';
 import { Button, Card, Select, Input, Toast } from '../../components';
+import QuickCheckout from '../../components/QuickCheckout';
 import VoiceCommandButton from '../../components/VoiceCommandButton';
 import useApi from '../../hooks/useApi';
 import { Product, Customer, Bill, BillItem } from '../../models';
 
 const Billing = () => {
-  const { Get, Post } = useApi();
+  const { Get, Post, getHost } = useApi();
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [bills, setBills] = useState<any[]>([]);
@@ -15,9 +16,10 @@ const Billing = () => {
   const [loading, setLoading] = useState(false);
   const [searchProduct, setSearchProduct] = useState('');
   const [showBills, setShowBills] = useState(false);
+  const [quickCheckout, setQuickCheckout] = useState(false);
   const [toast, setToast] = useState({ show: false, message: '', variant: 'success' as const });
 
-  const showToast = (message: string, variant: 'success' | 'danger' = 'success') => {
+  const showToast = (message: string, variant: 'primary' | 'success' | 'danger' | 'warning' | 'info' = 'success') => {
     setToast({ show: true, message, variant });
   };
 
@@ -51,6 +53,34 @@ const Billing = () => {
       setBills(response.results || response);
     } catch (error) {
       console.error('Failed to fetch bills', error);
+    }
+  };
+
+  const addProductByUPC = async (upc: string, quantity: number) => {
+    try {
+      const response = await Get(`${getHost()}/api/v1/product/scan/${upc}`);
+      const product = response;
+      
+      if (product && product.id) {
+        // Add to products list if not already there
+        if (!products.find(p => p.id === product.id)) {
+          setProducts([...products, product]);
+        }
+        
+        const existing = billItems.find(item => item.product === product.id);
+        if (existing) {
+          updateItem(billItems.indexOf(existing), 'quantity', existing.quantity + quantity);
+        } else {
+          setBillItems([...billItems, { product: product.id, quantity }]);
+        }
+        showToast(`${product.product_name} added to cart`, 'success');
+      } else {
+        showToast('Invalid product data', 'danger');
+      }
+    } catch (error: any) {
+      const errorMsg = error.response?.data?.message || error.response?.data?.error || 'Product not found';
+      showToast(errorMsg, 'danger');
+      console.error('Barcode scan error:', error);
     }
   };
 
@@ -128,7 +158,7 @@ const Billing = () => {
   return (
     <>
       <AdminLayout>
-        <div className="mb-3">
+        <div className="mb-3 d-flex gap-2">
           <Button 
             onClick={() => setShowBills(!showBills)} 
             variant="info"
@@ -136,9 +166,90 @@ const Billing = () => {
             <i className={`bi bi-${showBills ? 'cart' : 'receipt'} me-2`}></i>
             {showBills ? 'Create New Bill' : 'View Bills'}
           </Button>
+          <Button 
+            onClick={() => setQuickCheckout(!quickCheckout)} 
+            variant="primary"
+          >
+            <i className={`bi bi-${quickCheckout ? 'cart' : 'barcode'} me-2`}></i>
+            {quickCheckout ? 'Standard Mode' : 'Quick Checkout'}
+          </Button>
         </div>
 
-        {showBills ? (
+        {quickCheckout ? (
+          <div className="row g-3">
+            <div className="col-lg-4">
+              <QuickCheckout
+                onAddProduct={addProductByUPC}
+                onCheckout={handleSubmit}
+                cartTotal={calculateTotal()}
+                cartItems={billItems.length}
+                loading={loading}
+              />
+            </div>
+            <div className="col-lg-8">
+              <Card>
+                <div className="p-3 border-bottom bg-dark text-white">
+                  <h5 className="mb-0">Cart Items</h5>
+                </div>
+                <div className="p-3" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                  {billItems.length === 0 ? (
+                    <div className="text-center text-muted py-5">
+                      <i className="bi bi-cart-x" style={{ fontSize: '3rem' }}></i>
+                      <p className="mt-2">No items in cart</p>
+                    </div>
+                  ) : (
+                    <div className="list-group list-group-flush">
+                      {billItems.map((item, index) => {
+                        const product = products.find(p => p.id === item.product);
+                        return (
+                          <div key={index} className="list-group-item px-0 py-3">
+                            <div className="d-flex justify-content-between align-items-start mb-2">
+                              <div className="flex-grow-1">
+                                <h6 className="mb-1">{product?.product_name}</h6>
+                                <small className="text-muted">${Number(product?.price).toFixed(2)} each</small>
+                              </div>
+                              <button 
+                                className="btn btn-sm btn-link text-danger p-0"
+                                onClick={() => removeItem(index)}
+                              >
+                                <i className="bi bi-trash"></i>
+                              </button>
+                            </div>
+                            <div className="d-flex align-items-center gap-2">
+                              <button 
+                                className="btn btn-sm btn-outline-secondary"
+                                onClick={() => updateItem(index, 'quantity', Math.max(1, item.quantity - 1))}
+                              >
+                                <i className="bi bi-dash"></i>
+                              </button>
+                              <input
+                                type="number"
+                                className="form-control form-control-sm text-center"
+                                style={{ width: '60px' }}
+                                value={item.quantity}
+                                onChange={(e) => updateItem(index, 'quantity', parseInt(e.target.value) || 1)}
+                                min={1}
+                              />
+                              <button 
+                                className="btn btn-sm btn-outline-secondary"
+                                onClick={() => updateItem(index, 'quantity', item.quantity + 1)}
+                              >
+                                <i className="bi bi-plus"></i>
+                              </button>
+                              <div className="ms-auto fw-bold">
+                                ${((product?.price || 0) * item.quantity).toFixed(2)}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </div>
+          </div>
+        ) : showBills ? (
           <Card>
             <div className="p-3 border-bottom bg-dark text-white">
               <h5 className="mb-0">Recent Bills</h5>
