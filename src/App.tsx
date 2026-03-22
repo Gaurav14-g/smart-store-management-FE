@@ -16,6 +16,13 @@ import VoiceCommands from './pages/admin/VoiceCommands';
 import ProductScan from './pages/admin/ProductScan';
 import NotFound from './pages/NotFound';
 import PrivateRoute from './components/PrivateRoute';
+import Settings from './pages/admin/Settings';
+import Profile from './pages/admin/Profile';
+import RoleRoute from './components/RoleRoute';
+
+const OWNER_ONLY   = ['superuser', 'Owner'];
+const MANAGEMENT   = ['superuser', 'Owner', 'Manager'];
+const REPORTS      = ['superuser', 'Owner', 'Manager'];
 
 function App() {
   return (
@@ -40,11 +47,15 @@ function App() {
           </PrivateRoute>
         }
       />
+      <Route path="/settings" element={<PrivateRoute><RoleRoute allowed={['superuser', 'Owner', 'Manager']}><Settings /></RoleRoute></PrivateRoute>} />
+      <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
       <Route
         path="/users"
         element={
           <PrivateRoute>
-            <Users />
+            <RoleRoute allowed={MANAGEMENT}>
+              <Users />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
@@ -52,7 +63,9 @@ function App() {
         path="/roles"
         element={
           <PrivateRoute>
-            <Roles />
+            <RoleRoute allowed={OWNER_ONLY}>
+              <Roles />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
@@ -60,7 +73,9 @@ function App() {
         path="/clients"
         element={
           <PrivateRoute>
-            <Clients />
+            <RoleRoute allowed={MANAGEMENT}>
+              <Clients />
+            </RoleRoute>
           </PrivateRoute>
         }
       />
@@ -100,7 +115,9 @@ function App() {
         path="/sales-reports"
         element={
           <PrivateRoute>
-            <SalesReports />
+            <RoleRoute allowed={REPORTS}>
+              <SalesReports />
+            </RoleRoute>
           </PrivateRoute>
         }
       />

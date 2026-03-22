@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import AuthContext from '../context/AuthContext';
 
@@ -21,6 +22,7 @@ interface DecodedToken {
 
 export default function Navbar({ onToggleSidebar }: NavbarProps) {
   const { logOutUser, authToken } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   let userInfo = null;
   let userRoles = [];
@@ -79,8 +81,16 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
                   <li><hr className="dropdown-divider" /></li>
                 </>
               )}
-              <li><a className="dropdown-item" href="#"><i className="bi bi-gear me-2"></i>Settings</a></li>
-              <li><a className="dropdown-item" href="#"><i className="bi bi-person me-2"></i>Profile</a></li>
+              <li>
+                <button className="dropdown-item" onClick={() => navigate('/settings')}>
+                  <i className="bi bi-gear me-2"></i>Settings
+                </button>
+              </li>
+              <li>
+                <button className="dropdown-item" onClick={() => navigate('/profile')}>
+                  <i className="bi bi-person me-2"></i>Profile
+                </button>
+              </li>
               <li><hr className="dropdown-divider" /></li>
               <li>
                 <button className="dropdown-item text-danger" onClick={() => logOutUser()}>

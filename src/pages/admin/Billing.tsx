@@ -3,6 +3,7 @@ import AdminLayout from '../../layouts/AdminLayout';
 import { Button, Card, Select, Input, Toast } from '../../components';
 import QuickCheckout from '../../components/QuickCheckout';
 import VoiceCommandButton from '../../components/VoiceCommandButton';
+import BillReceipt from '../../components/BillReceipt';
 import useApi from '../../hooks/useApi';
 import { Product, Customer, Bill, BillItem } from '../../models';
 
@@ -17,6 +18,7 @@ const Billing = () => {
   const [searchProduct, setSearchProduct] = useState('');
   const [showBills, setShowBills] = useState(false);
   const [quickCheckout, setQuickCheckout] = useState(false);
+  const [receiptBill, setReceiptBill] = useState<any>(null);
   const [toast, setToast] = useState({ show: false, message: '', variant: 'success' as const });
 
   const showToast = (message: string, variant: 'primary' | 'success' | 'danger' | 'warning' | 'info' = 'success') => {
@@ -123,7 +125,8 @@ const Billing = () => {
         items: billItems
       };
       
-      await Post('bill', billData);
+      const res = await Post('bill', billData);
+      setReceiptBill(res.data);
       showToast('Bill created successfully');
       setBillItems([]);
       setSelectedCustomer('');
@@ -263,6 +266,7 @@ const Billing = () => {
                     <th>Items</th>
                     <th>Total Amount</th>
                     <th>Created By</th>
+                  <th>Receipt</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -273,6 +277,19 @@ const Billing = () => {
                       <td>{bill.items_count || 0} items</td>
                       <td className="fw-bold text-success">${Number(bill.total_amount).toFixed(2)}</td>
                       <td>{bill.user_name}</td>
+                      <td>
+                        <button
+                          className="btn btn-sm btn-outline-dark"
+                          onClick={async () => {
+                            try {
+                              const full = await Get(`${getHost()}/api/v1/bill/${bill.id}/`);
+                              setReceiptBill(full);
+                            } catch { showToast('Failed to load receipt', 'danger'); }
+                          }}
+                        >
+                          <i className="bi bi-receipt"></i>
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -430,6 +447,7 @@ const Billing = () => {
         />
       </AdminLayout>
       <VoiceCommandButton commands={voiceCommands} />
+      {receiptBill && <BillReceipt bill={receiptBill} onClose={() => setReceiptBill(null)} />}
     </>
   );
 };

@@ -4,42 +4,58 @@
   },
   "menu": {
     "superuser": [
-      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2", "section": "Main" },
-      { "label": "Products", "url": "/products", "icon": "box-seam", "section": "Store" },
-      { "label": "Customers", "url": "/customers", "icon": "person-lines-fill", "section": "Store" },
-      { "label": "Customer Analytics", "url": "/customer-analytics", "icon": "graph-up-arrow", "section": "Store" },
-      { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" },
-      { "label": "Sales Reports", "url": "/sales-reports", "icon": "graph-up", "section": "Operations" },
-      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic", "section": "Operations" },
-      { "label": "Users", "url": "/users", "icon": "people", "section": "Management" },
-      { "label": "Roles", "url": "/roles", "icon": "shield-lock", "section": "Management" }
+      { "label": "Dashboard",          "url": "/dashboard",          "icon": "speedometer2",    "section": "Main" },
+      { "label": "Products",           "url": "/products",           "icon": "box-seam",        "section": "Store" },
+      { "label": "Customers",          "url": "/customers",          "icon": "person-lines-fill","section": "Store" },
+      { "label": "Customer Analytics", "url": "/customer-analytics", "icon": "graph-up-arrow",  "section": "Store" },
+      { "label": "Billing",            "url": "/billing",            "icon": "receipt",         "section": "Operations" },
+      { "label": "Sales Reports",      "url": "/sales-reports",      "icon": "graph-up",        "section": "Operations" },
+      { "label": "Voice Commands",     "url": "/voice-commands",     "icon": "mic",             "section": "Operations" },
+      { "label": "Users",              "url": "/users",              "icon": "people",          "section": "Management" },
+      { "label": "Roles",              "url": "/roles",              "icon": "shield-lock",     "section": "Management" },
+      { "label": "Settings",           "url": "/settings",          "icon": "gear",            "section": "Management" }
     ],
-    "admin": [
-      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2", "section": "Main" },
-      { "label": "Products", "url": "/products", "icon": "box-seam", "section": "Store" },
-      { "label": "Customers", "url": "/customers", "icon": "person-lines-fill", "section": "Store" },
-      { "label": "Customer Analytics", "url": "/customer-analytics", "icon": "graph-up-arrow", "section": "Store" },
-      { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" },
-      { "label": "Sales Reports", "url": "/sales-reports", "icon": "graph-up", "section": "Operations" },
-      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic", "section": "Operations" },
-      { "label": "Users", "url": "/users", "icon": "people", "section": "Management" },
-      { "label": "Roles", "url": "/roles", "icon": "shield-lock", "section": "Management" }
+    "Owner": [
+      { "label": "Dashboard",          "url": "/dashboard",          "icon": "speedometer2",    "section": "Main" },
+      { "label": "Products",           "url": "/products",           "icon": "box-seam",        "section": "Store" },
+      { "label": "Customers",          "url": "/customers",          "icon": "person-lines-fill","section": "Store" },
+      { "label": "Customer Analytics", "url": "/customer-analytics", "icon": "graph-up-arrow",  "section": "Store" },
+      { "label": "Billing",            "url": "/billing",            "icon": "receipt",         "section": "Operations" },
+      { "label": "Sales Reports",      "url": "/sales-reports",      "icon": "graph-up",        "section": "Operations" },
+      { "label": "Voice Commands",     "url": "/voice-commands",     "icon": "mic",             "section": "Operations" },
+      { "label": "Users",              "url": "/users",              "icon": "people",          "section": "Management" },
+      { "label": "Roles",              "url": "/roles",              "icon": "shield-lock",     "section": "Management" },
+      { "label": "Settings",           "url": "/settings",          "icon": "gear",            "section": "Management" }
+    ],
+    "Manager": [
+      { "label": "Dashboard",          "url": "/dashboard",          "icon": "speedometer2",    "section": "Main" },
+      { "label": "Products",           "url": "/products",           "icon": "box-seam",        "section": "Store" },
+      { "label": "Customers",          "url": "/customers",          "icon": "person-lines-fill","section": "Store" },
+      { "label": "Customer Analytics", "url": "/customer-analytics", "icon": "graph-up-arrow",  "section": "Store" },
+      { "label": "Billing",            "url": "/billing",            "icon": "receipt",         "section": "Operations" },
+      { "label": "Sales Reports",      "url": "/sales-reports",      "icon": "graph-up",        "section": "Operations" },
+      { "label": "Voice Commands",     "url": "/voice-commands",     "icon": "mic",             "section": "Operations" },
+      { "label": "Settings",           "url": "/settings",          "icon": "gear",            "section": "Management" }
+    ],
+    "Cashier": [
+      { "label": "Dashboard",      "url": "/dashboard",  "icon": "speedometer2",    "section": "Main" },
+      { "label": "Products",       "url": "/products",   "icon": "box-seam",        "section": "Store" },
+      { "label": "Customers",      "url": "/customers",  "icon": "person-lines-fill","section": "Store" },
+      { "label": "Billing",        "url": "/billing",    "icon": "receipt",         "section": "Operations" },
+      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic",         "section": "Operations" }
+    ],
+    "Employee": [
+      { "label": "Dashboard",  "url": "/dashboard",  "icon": "speedometer2",    "section": "Main" },
+      { "label": "Products",   "url": "/products",   "icon": "box-seam",        "section": "Store" },
+      { "label": "Customers",  "url": "/customers",  "icon": "person-lines-fill","section": "Store" },
+      { "label": "Billing",    "url": "/billing",    "icon": "receipt",         "section": "Operations" }
     ],
     "staff": [
-      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2", "section": "Main" },
-      { "label": "Products", "url": "/products", "icon": "box-seam", "section": "Store" },
-      { "label": "Customers", "url": "/customers", "icon": "person-lines-fill", "section": "Store" },
-      { "label": "Customer Analytics", "url": "/customer-analytics", "icon": "graph-up-arrow", "section": "Store" },
-      { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" },
-      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic", "section": "Operations" }
-    ],
-    "backoffice": [
-      { "label": "Dashboard", "url": "/dashboard", "icon": "speedometer2", "section": "Main" },
-      { "label": "Products", "url": "/products", "icon": "box-seam", "section": "Store" },
-      { "label": "Customers", "url": "/customers", "icon": "person-lines-fill", "section": "Store" },
-      { "label": "Customer Analytics", "url": "/customer-analytics", "icon": "graph-up-arrow", "section": "Store" },
-      { "label": "Billing", "url": "/billing", "icon": "receipt", "section": "Operations" },
-      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic", "section": "Operations" }
+      { "label": "Dashboard",      "url": "/dashboard",  "icon": "speedometer2",    "section": "Main" },
+      { "label": "Products",       "url": "/products",   "icon": "box-seam",        "section": "Store" },
+      { "label": "Customers",      "url": "/customers",  "icon": "person-lines-fill","section": "Store" },
+      { "label": "Billing",        "url": "/billing",    "icon": "receipt",         "section": "Operations" },
+      { "label": "Voice Commands", "url": "/voice-commands", "icon": "mic",         "section": "Operations" }
     ]
   }
 }

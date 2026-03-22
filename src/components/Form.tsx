@@ -29,7 +29,7 @@ const Form: React.FC<FormProps> = (props) => {
   const inputFields = props.inputFields;
   const fieldDefault = props.data || {};
   const submitBtnTitle = props.submitBtnTitle || "Submit";
-  const [formData, setFormData] = useState<Record<string, any>>(fieldDefault);
+  const [formData, setFormData] = useState<Record<string, any>>({});
   const [toastState, setToastState] = useState({ show: false, message: "", variant: "primary" as const });
 
   const { Patch, Post } = useApi();
@@ -71,15 +71,19 @@ const Form: React.FC<FormProps> = (props) => {
 
     const data = { ...fieldDefault, ...formData };
     
-    // Convert groups to array of numbers if it's a string
-    if (data.groups && typeof data.groups === 'string') {
-      data.groups = [parseInt(data.groups)];
+    // Normalize groups
+    if (data.groups !== undefined) {
+      if (typeof data.groups === 'string') {
+        data.groups = data.groups ? [parseInt(data.groups)] : [];
+      } else if (Array.isArray(data.groups)) {
+        data.groups = data.groups.map((p: any) => typeof p === 'string' ? parseInt(p) : p);
+      }
     }
     
-    // Convert permissions to array of numbers if needed
-    if (data.permissions) {
+    // Normalize permissions
+    if (data.permissions !== undefined) {
       if (typeof data.permissions === 'string') {
-        data.permissions = [parseInt(data.permissions)];
+        data.permissions = data.permissions ? [parseInt(data.permissions)] : [];
       } else if (Array.isArray(data.permissions)) {
         data.permissions = data.permissions.map((p: any) => typeof p === 'string' ? parseInt(p) : p);
       }
@@ -87,7 +91,28 @@ const Form: React.FC<FormProps> = (props) => {
 
     if (fieldDefault?.id) {
       try {
-        await Patch(props.api, fieldDefault.id, data);
+        const changedData: Record<string, any> = {};
+        const editableKeys = inputFields.map(f => f.name);
+        // Normalize fieldDefault arrays for comparison
+        const normalizedDefault: Record<string, any> = { ...fieldDefault };
+        if (Array.isArray(normalizedDefault.groups)) {
+          normalizedDefault.groups = normalizedDefault.groups.map((g: any) => typeof g === 'object' ? g.id : parseInt(g));
+        }
+        if (Array.isArray(normalizedDefault.permissions)) {
+          normalizedDefault.permissions = normalizedDefault.permissions.map((p: any) => typeof p === 'object' ? p.id : parseInt(p));
+        }
+        editableKeys.forEach(key => {
+          // Only include if user explicitly changed it (exists in formData)
+          if (!(key in formData)) return;
+          if (JSON.stringify(data[key]) !== JSON.stringify(normalizedDefault[key])) {
+            changedData[key] = data[key];
+          }
+        });
+        if (Object.keys(changedData).length === 0) {
+          props.closeDrawer();
+          return;
+        }
+        await Patch(props.api, fieldDefault.id, changedData);
         props.closeDrawer();
         props.refreshData();
         showToast("Record updated successfully!", "success");
@@ -107,12 +132,15 @@ const Form: React.FC<FormProps> = (props) => {
   }
 
   const handleFieldChange = (name: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => {
+      if (JSON.stringify(prev[name]) === JSON.stringify(value)) return prev;
+      return { ...prev, [name]: value };
+    });
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} autoComplete="off">
         {inputFields.map((field, index) => {
           const fieldName = field.name;
           const defaultValue = fieldDefault[fieldName];
@@ -132,7 +160,7 @@ const Form: React.FC<FormProps> = (props) => {
               <DynamicField
                 key={index}
                 field={field}
-                defaultValue={defaultValue}
+                defaultValue={formData[fieldName] !== undefined ? formData[fieldName] : fieldDefault[fieldName]}
                 handleChange={handleFieldChange}
               />
             );

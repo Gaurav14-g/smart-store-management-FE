@@ -10,6 +10,8 @@ import global from '../../../config/Global.json';
 
 export default function SignUp() {
   const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -39,6 +41,8 @@ export default function SignUp() {
     try {
       await axios.post(`${global.api.host}/api/v1/user/`, {
         username,
+        first_name: firstName,
+        last_name: lastName,
         email,
         password,
         groups: []
@@ -68,6 +72,26 @@ export default function SignUp() {
             onChange={(e) => setUsername(e.target.value)}
             required
           />
+          <div className="row g-2">
+            <div className="col-6">
+              <Input
+                type="text"
+                label="First Name"
+                placeholder="First name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+            <div className="col-6">
+              <Input
+                type="text"
+                label="Last Name"
+                placeholder="Last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+          </div>
           <Input
             type="email"
             label="Email"

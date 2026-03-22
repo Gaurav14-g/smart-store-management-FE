@@ -4,6 +4,7 @@ export interface User {
   email: string;
   first_name?: string;
   last_name?: string;
+  contact_no?: string;
   is_active?: boolean;
   is_staff?: boolean;
   is_client?: boolean;
@@ -20,6 +21,7 @@ export interface UserCreate {
   email: string;
   first_name?: string;
   last_name?: string;
+  contact_no?: string;
   groups?: number[];
   is_active?: boolean;
 }
@@ -29,6 +31,7 @@ export interface UserUpdate {
   email?: string;
   first_name?: string;
   last_name?: string;
+  contact_no?: string;
   is_active?: boolean;
   groups?: number[];
 }
@@ -41,37 +44,20 @@ export const userSchema = {
     { name: "email", label: "Email", type: "email", required: true, placeholder: "Enter email" },
     { name: "first_name", label: "First Name", type: "text", placeholder: "Enter first name" },
     { name: "last_name", label: "Last Name", type: "text", placeholder: "Enter last name" },
-    {
-      name: "groups",
-      label: "Role",
-      type: "select",
-      required: true,
-      options: [
-        { value: "3", label: "Frontend Developer" },
-        { value: "4", label: "Backend Developer" },
-        { value: "5", label: "QA Engineer" },
-        { value: "6", label: "Team Lead" },
-      ],
-    },
+    { name: "contact_no", label: "Contact No", type: "text", maxLength: 20, placeholder: "Enter contact number" },
+    { name: "groups", label: "Role", type: "select", required: true, options: [] },
     { name: "is_active", label: "Active", type: "switch" },
+    { name: "is_staff", label: "Is Staff", type: "switch" },
   ],
   editField: [
     { name: "username", label: "Username", type: "text", required: true, placeholder: "Enter username" },
     { name: "email", label: "Email", type: "email", required: true, placeholder: "Enter email" },
     { name: "first_name", label: "First Name", type: "text", placeholder: "Enter first name" },
     { name: "last_name", label: "Last Name", type: "text", placeholder: "Enter last name" },
-    {
-      name: "groups",
-      label: "Role",
-      type: "select",
-      options: [
-        { value: "3", label: "Frontend Developer" },
-        { value: "4", label: "Backend Developer" },
-        { value: "5", label: "QA Engineer" },
-        { value: "6", label: "Team Lead" },
-      ],
-    },
+    { name: "contact_no", label: "Contact No", type: "text", maxLength: 20, placeholder: "Enter contact number" },
+    { name: "groups", label: "Role", type: "select", options: [] },
     { name: "is_active", label: "Active", type: "switch" },
+    { name: "is_staff", label: "Is Staff", type: "switch" },
   ],
   showField: [
     { key: "id", label: "ID" },
@@ -79,6 +65,7 @@ export const userSchema = {
     { key: "email", label: "Email" },
     { key: "first_name", label: "First Name" },
     { key: "last_name", label: "Last Name" },
+    { key: "contact_no", label: "Contact No" },
     { key: "groups_detail", label: "Roles" },
     { key: "is_active", label: "Active", type: "status" },
     { key: "hostname", label: "Hostname" },

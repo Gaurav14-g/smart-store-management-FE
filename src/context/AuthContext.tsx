@@ -83,20 +83,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         localStorage.setItem("isAuthenticated", "true");
         
         showToast("Login successful! Welcome back.", "success");
-        
+
+        const storeRoles = ['Owner', 'Manager', 'Cashier', 'Employee'];
         if (decodedUser.is_superuser) {
           localStorage.setItem("role", "superuser");
-          navigate('/dashboard');
-        } else if (decodedUser.roles && decodedUser.roles.includes('client')) {
-          localStorage.setItem("role", "client");
-          navigate('/dashboard');
-        } else if (decodedUser.roles && ['qa_engineer', 'frontend_dev', 'backend_dev', 'hum_lead'].some(role => decodedUser.roles!.includes(role))) {
-          const role = decodedUser.roles.find(r => ['qa_engineer', 'frontend_dev', 'backend_dev', 'hum_lead'].includes(r));
-          localStorage.setItem("role", role!);
-          navigate('/dashboard');
+        } else if (decodedUser.roles) {
+          const storeRole = decodedUser.roles.find(r => storeRoles.includes(r));
+          localStorage.setItem("role", storeRole || decodedUser.roles[0] || 'staff');
         } else {
-          navigate('/dashboard');
+          localStorage.setItem("role", 'staff');
         }
+        navigate('/dashboard');
       })
       .catch((error) => {
         const errorMessage = error.response?.data?.detail || "Username or password incorrect";
@@ -148,13 +145,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           setAuthToken(newTokens);
           setUser(decodedUser);
           localStorage.setItem("authToken", JSON.stringify(newTokens));
-          
+
+          const storeRoles = ['Owner', 'Manager', 'Cashier', 'Employee'];
           if (decodedUser.is_superuser) {
             localStorage.setItem("role", "superuser");
-          } else if (decodedUser.roles && decodedUser.roles.length > 0) {
-            const primaryRole = decodedUser.roles.includes('client') ? 'client' :
-                               decodedUser.roles.find(role => ['qa_engineer', 'frontend_dev', 'backend_dev', 'hum_lead'].includes(role)) || decodedUser.roles[0];
-            localStorage.setItem("role", primaryRole);
+          } else if (decodedUser.roles) {
+            const storeRole = decodedUser.roles.find(r => storeRoles.includes(r));
+            localStorage.setItem("role", storeRole || decodedUser.roles[0] || 'staff');
+          } else {
+            localStorage.setItem("role", 'staff');
           }
           
         } catch (error) {
