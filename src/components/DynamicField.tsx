@@ -37,6 +37,7 @@ const DynamicField: React.FC<DynamicFieldProps> = ({ field, defaultValue, handle
           onChange={onChange}
           placeholder={field.placeholder}
           required={field.required}
+          maxLength={field.maxLength}
           id={field.name}
         />
       );
@@ -75,6 +76,7 @@ const DynamicField: React.FC<DynamicFieldProps> = ({ field, defaultValue, handle
           required={field.required}
           min={field.min}
           max={field.max}
+          step={field.step}
           id={field.name}
         />
       );
@@ -92,18 +94,26 @@ const DynamicField: React.FC<DynamicFieldProps> = ({ field, defaultValue, handle
         />
       );
 
-    case "select":
+    case "select": {
+      const selectVal = Array.isArray(defaultValue)
+        ? String(defaultValue[0] ?? '')
+        : String(defaultValue ?? '');
       return (
         <Select
           label={field.label}
-          value={Array.isArray(defaultValue) ? String(defaultValue[0] || '') : defaultValue}
-          onChange={onChange}
+          value={selectVal}
+          onChange={(e) => {
+            if (e.target.value !== '' && e.target.value !== selectVal) {
+              onChange(e);
+            }
+          }}
           options={field.options || []}
-          placeholder={field.placeholder}
+          placeholder={field.placeholder || 'Select...'}
           required={field.required}
           id={field.name}
         />
       );
+    }
 
     case "multi-select":
       return (
@@ -140,36 +150,22 @@ const DynamicField: React.FC<DynamicFieldProps> = ({ field, defaultValue, handle
 
     case "checkbox":
       return (
-        <>
-          <Checkbox
-            label={field.label}
-            checked={defaultValue}
-            onChange={(checked) => handleChange?.(field.name, checked)}
-            id={field.name}
-          />
-          <input
-            type="hidden"
-            name={field.name}
-            value={defaultValue ? "true" : "false"}
-          />
-        </>
+        <Checkbox
+          label={field.label}
+          checked={defaultValue}
+          onChange={(checked) => handleChange?.(field.name, checked)}
+          id={field.name}
+        />
       );
 
     case "switch":
       return (
-        <>
-          <SwitchToggle
-            label={field.label}
-            checked={defaultValue}
-            onChange={(checked) => handleChange?.(field.name, checked)}
-            id={field.name}
-          />
-          <input
-            type="hidden"
-            name={field.name}
-            value={defaultValue ? "true" : "false"}
-          />
-        </>
+        <SwitchToggle
+          label={field.label}
+          checked={defaultValue ?? false}
+          onChange={(checked) => handleChange?.(field.name, checked)}
+          id={field.name}
+        />
       );
 
     case "date":

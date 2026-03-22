@@ -6,14 +6,17 @@ const Customers = () => {
     api: 'customer',
     createField: [
       { name: 'name', label: 'Customer Name', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: false },
       { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
     ],
     editField: [
       { name: 'name', label: 'Customer Name', type: 'text', required: true },
+      { name: 'email', label: 'Email', type: 'email', required: false },
       { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
     ],
     showField: [
       { key: 'name', label: 'Name' },
+      { key: 'email', label: 'Email' },
       { key: 'phone', label: 'Phone' },
     ],
   };

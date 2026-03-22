@@ -14,10 +14,21 @@ const useApi = () => {
 
   const getHost = () => global.api.host;
 
-  const { authToken } = useContext(AuthContext);
+  const { authToken, logOutUser } = useContext(AuthContext);
   let token = authToken?.access;
 
+  const handleAuthError = (error: any) => {
+    if (error.response?.status === 401) {
+      logOutUser('Session expired. Please login again.');
+    }
+    throw error;
+  };
+
   const Post = async (api: string, payload: any, params: Record<string, any> = {}) => {
+    if (!token) {
+      logOutUser('Please login to continue.');
+      throw new Error('No authentication token');
+    }
     let _api = (getAPI(api, params).includes('undefined')) ? api : getAPI(api, params);
     try {
       const response = await axios.post(_api, payload, {
@@ -27,11 +38,15 @@ const useApi = () => {
       });
       return response;
     } catch (err) {
-      throw err;
+      return handleAuthError(err);
     }
   };
 
   const Put = async (api: string, id: string | number, payload: any) => {
+    if (!token) {
+      logOutUser('Please login to continue.');
+      throw new Error('No authentication token');
+    }
     let _api = (getAPI(api).includes('undefined')) ? api : getAPI(api);
     try {
       const response = await axios.put(`${_api}${id}/`, payload, {
@@ -41,11 +56,15 @@ const useApi = () => {
       });
       return response;
     } catch (err) {
-      throw err;
+      return handleAuthError(err);
     }
   };
 
   const Patch = async (api: string, id: string | number, payload: any, params: Record<string, any> = {}) => {
+    if (!token) {
+      logOutUser('Please login to continue.');
+      throw new Error('No authentication token');
+    }
     let _api = (getAPI(api, params).includes('undefined')) ? api : getAPI(api, params);
     if (id && !_api.includes('{id}')) {
       _api = `${_api}${id}/`;
@@ -58,11 +77,15 @@ const useApi = () => {
       });
       return response;
     } catch (err) {
-      throw err;
+      return handleAuthError(err);
     }
   };
 
   const Get = async (api: string, params: Record<string, any> = {}) => {
+    if (!token) {
+      logOutUser('Please login to continue.');
+      throw new Error('No authentication token');
+    }
     let _api = (getAPI(api, params).includes('undefined') || api.includes('?')) ? api : getAPI(api, params);
     try {
       const response = await axios.get(_api, {
@@ -72,11 +95,15 @@ const useApi = () => {
       });
       return response.data;
     } catch (err) {
-      throw err;
+      return handleAuthError(err);
     }
   };
 
   const Delete = async (api: string, id: string | number) => {
+    if (!token) {
+      logOutUser('Please login to continue.');
+      throw new Error('No authentication token');
+    }
     let _api = (getAPI(api).includes('undefined')) ? api : getAPI(api);
     try {
       const response = await axios.delete(`${_api}${id}/`, {
@@ -86,7 +113,7 @@ const useApi = () => {
       });
       return response;
     } catch (err) {
-      throw err;
+      return handleAuthError(err);
     }
   };
 

@@ -1,5 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 * {
-  border-radius: 0 !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  background: #f5f5f5;
+  color: #2c3e50;
+}
+
+.btn {
+  border-radius: 6px !important;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: #2563eb;
+  border: none;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+.card {
+  border-radius: 8px !important;
+  border: 1px solid #e5e7eb;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-control, .form-select {
+  border-radius: 6px !important;
+  border: 1px solid #d1d5db;
+  padding: 0.625rem 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.table {
+  border-radius: 8px !important;
+  overflow: hidden;
+  background: white;
+}
+
+.table thead {
+  background: #1e293b;
+  color: white;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.badge {
+  border-radius: 4px !important;
+  padding: 0.35rem 0.75rem;
+  font-weight: 500;
+}
+
+.modal-content {
+  border-radius: 12px !important;
+  border: none;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 @media (min-width: 992px) {
