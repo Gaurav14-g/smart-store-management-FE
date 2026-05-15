@@ -2,9 +2,6 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthLayout from '../../layouts/AuthLayout';
-import Card from '../../components/Card';
-import Input from '../../components/Input';
-import Button from '../../components/Button';
 import Toast from '../../components/Toast';
 import global from '../../../config/Global.json';
 
@@ -25,107 +22,101 @@ export default function SignUp() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (password !== confirmPassword) {
-      showToast('Passwords do not match', 'danger');
-      return;
-    }
-
-    if (password.length < 6) {
-      showToast('Password must be at least 6 characters', 'danger');
-      return;
-    }
-
+    if (password !== confirmPassword) { showToast('Passwords do not match', 'danger'); return; }
+    if (password.length < 6) { showToast('Password must be at least 6 characters', 'danger'); return; }
     setLoading(true);
-    
     try {
       await axios.post(`${global.api.host}/api/v1/user/`, {
-        username,
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        password,
-        groups: []
+        username, first_name: firstName, last_name: lastName, email, password, groups: []
       });
-      
       showToast('Registration successful! Please login.', 'success');
       setTimeout(() => navigate('/signin'), 2000);
     } catch (error: any) {
-      const errorMessage = error.response?.data?.username?.[0] || 
-                          error.response?.data?.error || 
-                          'Registration failed. Please try again.';
-      showToast(errorMessage, 'danger');
+      showToast(error.response?.data?.username?.[0] || error.response?.data?.error || 'Registration failed.', 'danger');
     } finally {
       setLoading(false);
     }
   };
 
+  const field = (
+    label: string, icon: string, type: string, placeholder: string,
+    value: string, onChange: (v: string) => void, required = false
+  ) => (
+    <div className="mb-3">
+      <label className="form-label fw-semibold" style={{ fontSize: '0.85rem', color: '#374151' }}>{label}</label>
+      <div className="input-group">
+        <span className="input-group-text bg-white border-end-0" style={{ borderColor: '#d1d5db' }}>
+          <i className={`bi bi-${icon} text-muted`}></i>
+        </span>
+        <input
+          type={type}
+          className="form-control border-start-0 ps-0"
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required={required}
+          style={{ borderColor: '#d1d5db', boxShadow: 'none' }}
+        />
+      </div>
+    </div>
+  );
+
   return (
     <AuthLayout>
-      <Card title="Sign Up" className="shadow">
+      <div>
+        <h4 className="fw-bold mb-1" style={{ color: '#0f172a' }}>Create an account</h4>
+        <p className="text-muted mb-4" style={{ fontSize: '0.9rem' }}>Fill in the details below to get started</p>
+
         <form onSubmit={handleSubmit}>
-          <Input
-            type="text"
-            label="Username"
-            placeholder="Enter username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <div className="row g-2">
+          {field('Username', 'person', 'text', 'Enter username', username, setUsername, true)}
+
+          <div className="row g-2 mb-0">
             <div className="col-6">
-              <Input
-                type="text"
-                label="First Name"
-                placeholder="First name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
+              <div className="mb-3">
+                <label className="form-label fw-semibold" style={{ fontSize: '0.85rem', color: '#374151' }}>First Name</label>
+                <input
+                  type="text" className="form-control" placeholder="First name"
+                  value={firstName} onChange={(e) => setFirstName(e.target.value)}
+                  style={{ borderColor: '#d1d5db', boxShadow: 'none' }}
+                />
+              </div>
             </div>
             <div className="col-6">
-              <Input
-                type="text"
-                label="Last Name"
-                placeholder="Last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
+              <div className="mb-3">
+                <label className="form-label fw-semibold" style={{ fontSize: '0.85rem', color: '#374151' }}>Last Name</label>
+                <input
+                  type="text" className="form-control" placeholder="Last name"
+                  value={lastName} onChange={(e) => setLastName(e.target.value)}
+                  style={{ borderColor: '#d1d5db', boxShadow: 'none' }}
+                />
+              </div>
             </div>
           </div>
-          <Input
-            type="email"
-            label="Email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Input
-            type="password"
-            label="Password"
-            placeholder="Enter password (min 6 characters)"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <Input
-            type="password"
-            label="Confirm Password"
-            placeholder="Confirm password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <Button type="submit" variant="primary" className="w-100 mb-3" disabled={loading}>
-            {loading ? 'Creating Account...' : 'Sign Up'}
-          </Button>
-          <div className="text-center">
-            <Link to="/signin">
-              Already have an account? Sign in
+
+          {field('Email', 'envelope', 'email', 'Enter email', email, setEmail, true)}
+          {field('Password', 'lock', 'password', 'Min 6 characters', password, setPassword, true)}
+          {field('Confirm Password', 'lock-fill', 'password', 'Repeat password', confirmPassword, setConfirmPassword, true)}
+
+          <button
+            type="submit"
+            className="btn w-100 fw-semibold mb-4 mt-1"
+            disabled={loading}
+            style={{ background: '#2563eb', color: '#fff', padding: '10px', fontSize: '0.95rem', border: 'none', borderRadius: 8 }}
+          >
+            {loading ? (
+              <><span className="spinner-border spinner-border-sm me-2"></span>Creating Account...</>
+            ) : 'Create Account'}
+          </button>
+
+          <p className="text-center text-muted mb-0" style={{ fontSize: '0.875rem' }}>
+            Already have an account?{' '}
+            <Link to="/signin" style={{ color: '#2563eb', textDecoration: 'none', fontWeight: 600 }}>
+              Sign in
             </Link>
-          </div>
+          </p>
         </form>
-      </Card>
+      </div>
+
       <Toast
         show={toastState.show}
         onClose={() => setToastState({ ...toastState, show: false })}

@@ -141,7 +141,7 @@ export default function VoiceCommandButton({ commands }: VoiceCommandButtonProps
         style={{
           position: 'fixed',
           bottom: '30px',
-          right: '30px',
+          right: '100px',
           width: '70px',
           height: '70px',
           zIndex: 1000,

@@ -166,9 +166,13 @@ const Form: React.FC<FormProps> = (props) => {
             );
           }
         })}
-        <Button variant="primary" type="submit" className="mt-3">
+        <button
+          type="submit"
+          className="btn w-100 fw-semibold mt-4"
+          style={{ background: '#2563eb', color: '#fff', padding: '10px', fontSize: '0.95rem', border: 'none', borderRadius: 8 }}
+        >
           {submitBtnTitle}
-        </Button>
+        </button>
       </form>
 
       <Toast

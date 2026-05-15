@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import useApi from "../hooks/useApi";
 import FormWithDrawer from "./FormWithDrawer";
 import Button from "./Button";
-import Card from "./Card";
 import TableSearchInput from "./TableSearchInput";
 import RowActionsMenu from "./RowActionsMenu";
 import ConfirmDialog from "./ConfirmDialog";
@@ -189,101 +188,106 @@ const CrudManager: React.FC<CrudManagerProps> = (props) => {
         <Spinner fullScreen />
       ) : (
         <div>
-          <Card className="mb-3">
-            <div className="d-flex justify-content-between align-items-center p-3">
-              <div>
-                {createRequired && actionBtnName !== false && (
-                  <FormWithDrawer
-                    actionBtnName={actionBtnName as string}
-                    inputFields={createField}
-                    api={dataApi}
-                    createFormTitle={createFormTitle}
-                    refreshData={getData}
-                    buttonVariant="primary"
-                  />
-                )}
-              </div>
-              {searchRequired && (
-                <div style={{ width: "300px" }}>
-                  <TableSearchInput
-                    value={searchQuery}
-                    onChange={handleSearchInputChange}
-                    placeholder="Search..."
-                  />
-                </div>
+          <div className="d-flex justify-content-between align-items-center mb-3 px-1">
+            <div>
+              {createRequired && actionBtnName !== false && (
+                <FormWithDrawer
+                  actionBtnName={actionBtnName as string}
+                  inputFields={createField}
+                  api={dataApi}
+                  createFormTitle={createFormTitle}
+                  refreshData={getData}
+                  buttonVariant="primary"
+                />
               )}
             </div>
-          </Card>
+            {searchRequired && (
+              <div style={{ width: "280px" }}>
+                <TableSearchInput
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
+                  placeholder="Search..."
+                />
+              </div>
+            )}
+          </div>
 
-          <div className="table-responsive">
-            <table className="table table-hover table-sm table-striped align-middle" style={{ fontSize: '0.875rem' }}>
-              <thead className="table-dark" style={{ position: 'sticky', top: 0, zIndex: 10 }}>
-                <tr style={{ fontSize: '0.8rem', fontWeight: '600' }}>
+          <div className="table-responsive rounded border">
+            <table className="table table-hover align-middle mb-0" style={{ fontSize: '0.875rem' }}>
+              <thead style={{ backgroundColor: '#1e293b', color: '#f1f5f9', position: 'sticky', top: 0, zIndex: 10 }}>
+                <tr>
                   {showField.map((th, index) => (
                     <th
                       key={index}
-                      onClick={() => handleSort(th.key)}
-                      style={{ cursor: "pointer", whiteSpace: 'nowrap', padding: '12px 8px' }}
+                      onClick={() => th.type !== 'rowIndex' && handleSort(th.key)}
+                      style={{ cursor: th.type === 'rowIndex' ? 'default' : 'pointer', whiteSpace: 'nowrap', padding: '13px 16px', fontWeight: 600, fontSize: '0.78rem', letterSpacing: '0.04em', textTransform: 'uppercase', borderBottom: 'none' }}
                     >
-                      {th.label}{" "}
-                      {orderBy === th.key && (order === "asc" ? "▲" : "▼")}
+                      {th.label}{' '}
+                      {th.type !== 'rowIndex' && (orderBy === th.key ? (
+                        <span style={{ opacity: 1 }}>{order === 'asc' ? '▲' : '▼'}</span>
+                      ) : (
+                        <span style={{ opacity: 0.3 }}>▲</span>
+                      ))}
                     </th>
                   ))}
                   {actionBtnName !== false && (
-                    <th className="text-center" style={{ width: '120px', padding: '12px 8px' }}>{!hideDelete ? "Action" : ""}</th>
+                    <th className="text-center" style={{ width: '130px', padding: '13px 16px', fontWeight: 600, fontSize: '0.78rem', letterSpacing: '0.04em', textTransform: 'uppercase', borderBottom: 'none' }}>
+                      {!hideDelete ? 'Actions' : ''}
+                    </th>
                   )}
                 </tr>
               </thead>
-              <tbody style={{ fontSize: '0.8rem' }}>
-                {sortedData.map((data, rowIndex) => (
+              <tbody>
+                {sortedData.length === 0 ? (
+                  <tr>
+                    <td colSpan={showField.length + 1} className="text-center text-muted py-5">
+                      <i className="bi bi-inbox fs-3 d-block mb-2"></i>
+                      No records found
+                    </td>
+                  </tr>
+                ) : sortedData.map((data, rowIndex) => (
                   <tr
                     key={rowIndex}
-                    className={!data.is_active ? "table-secondary" : ""}
-                    style={{ transition: 'background-color 0.2s' }}
+                    style={{ borderBottom: '1px solid #f1f5f9', backgroundColor: !data.is_active ? '#f8fafc' : 'white' }}
                   >
                     {showField.map((field, i) => (
-                      <td key={i} style={{ padding: '10px 8px', verticalAlign: 'middle' }}>
-                        {field.type === "status" ? (
-                          <span
-                            className={`badge bg-${
-                              data[field.key] === true || data[field.key] === "Success"
-                                ? "success"
-                                : "danger"
-                            }`}
-                          >
+                      <td key={i} style={{ padding: '12px 16px', verticalAlign: 'middle', color: !data.is_active ? '#131414' : '#111827', fontWeight: 500 }}>
+                        {field.type === 'rowIndex' ? (
+                          <span className="text-muted">{rowIndex + 1}</span>
+                        ) : field.type === 'status' ? (
+                          <span className={`badge rounded-pill bg-${data[field.key] === true || data[field.key] === 'Success' ? 'success' : 'danger'}`}>
                             {String(data[field.key])}
                           </span>
-                        ) : field.type === "image" ? (
-                          <Button
-                            variant="primary"
-                            size="sm"
-                            onClick={() =>
-                              props.onViewImage && props.onViewImage(data[field.key])
-                            }
-                          >
+                        ) : field.type === 'image' ? (
+                          <Button variant="primary" size="sm" onClick={() => props.onViewImage && props.onViewImage(data[field.key])}>
                             View
                           </Button>
-                        ) : field.key === "groups_detail" && Array.isArray(data[field.key]) ? (
+                        ) : field.key === 'groups_detail' && Array.isArray(data[field.key]) ? (
                           data[field.key].map((group: any, idx: number) => (
-                            <span key={idx} className="badge bg-secondary me-1">
-                              {group.name}
-                            </span>
+                            <span key={idx} className="badge bg-secondary me-1">{group.name}</span>
                           ))
-                        ) : field.key === "permissions_detail" && Array.isArray(data[field.key]) ? (
+                        ) : field.key === 'permissions_detail' && Array.isArray(data[field.key]) ? (
                           data[field.key].map((perm: any, idx: number) => (
-                            <span key={idx} className="badge bg-info me-1" style={{ fontSize: '0.7rem' }}>
-                              {perm.name}
-                            </span>
+                            <span key={idx} className="badge bg-info me-1" style={{ fontSize: '0.7rem' }}>{perm.name}</span>
                           ))
-                        ) : typeof data[field.key] === "boolean" ? (
-                          data[field.key] ? "true" : "false"
+                        ) : field.key === 'quantity' || field.label === 'Stock' ? (
+                          <span className={`badge rounded-pill ${
+                            Number(data[field.key]) <= 10 ? 'bg-danger' :
+                            Number(data[field.key]) <= 50 ? 'bg-warning text-dark' : 'bg-success'
+                          }`} style={{ fontSize: '0.8rem', padding: '4px 10px' }}>
+                            {data[field.key]}
+                          </span>
+                        ) : field.key === 'price' ? (
+                          <span className="fw-semibold" style={{ color: '#0f766e' }}>₹{Number(data[field.key]).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                        ) : typeof data[field.key] === 'boolean' ? (
+                          data[field.key] ? 'true' : 'false'
                         ) : (
                           data[field.key]
                         )}
                       </td>
                     ))}
                     {actionBtnName !== false && (
-                      <td className="text-center" style={{ padding: '10px 8px' }}>
+                      <td className="text-center" style={{ padding: '10px 16px' }}>
                         <div className="d-flex gap-2 justify-content-center">
                           {editRequired && (
                             <FormWithDrawer
@@ -301,25 +305,15 @@ const CrudManager: React.FC<CrudManagerProps> = (props) => {
                             <RowActionsMenu
                               actions={[
                                 {
-                                  label: data.is_active ? "Deactivate User" : "Activate User",
-                                  icon: data.is_active ? "x-circle" : "check-circle",
-                                  onClick: () =>
-                                    setConfirmDialog({
-                                      show: true,
-                                      data,
-                                      action: data.is_active ? "softDelete" : "restore",
-                                    }),
+                                  label: data.is_active ? 'Deactivate User' : 'Activate User',
+                                  icon: data.is_active ? 'x-circle' : 'check-circle',
+                                  onClick: () => setConfirmDialog({ show: true, data, action: data.is_active ? 'softDelete' : 'restore' }),
                                 },
                                 {
-                                  label: "Remove Record",
-                                  icon: "trash",
-                                  variant: "danger",
-                                  onClick: () =>
-                                    setConfirmDialog({
-                                      show: true,
-                                      data,
-                                      action: "forceDelete",
-                                    }),
+                                  label: 'Remove Record',
+                                  icon: 'trash',
+                                  variant: 'danger',
+                                  onClick: () => setConfirmDialog({ show: true, data, action: 'forceDelete' }),
                                 },
                               ]}
                             />
@@ -333,27 +327,19 @@ const CrudManager: React.FC<CrudManagerProps> = (props) => {
             </table>
           </div>
 
-          <div className="d-flex justify-content-between align-items-center mt-3">
-            <div>
-              Showing {filteredData.length} of {totalCount} records
-            </div>
-            <div className="btn-group">
-              <Button
-                variant="secondary"
-                onClick={() => pageChangeRequest("prev")}
-                disabled={!previousPage}
-              >
-                Previous
+          <div className="d-flex justify-content-between align-items-center mt-3 px-1">
+            <span className="text-muted" style={{ fontSize: '0.85rem' }}>
+              Showing <strong>{filteredData.length}</strong> of <strong>{totalCount}</strong> records
+            </span>
+            <div className="d-flex align-items-center gap-2">
+              <Button variant="light" className="border" size="sm" onClick={() => pageChangeRequest('prev')} disabled={!previousPage}>
+                ← Previous
               </Button>
-              <Button variant="secondary" disabled>
+              <span className="px-3 py-1 rounded border bg-white" style={{ fontSize: '0.85rem', fontWeight: 600 }}>
                 Page {currentPage}
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => pageChangeRequest("next")}
-                disabled={!nextPage}
-              >
-                Next
+              </span>
+              <Button variant="light" className="border" size="sm" onClick={() => pageChangeRequest('next')} disabled={!nextPage}>
+                Next →
               </Button>
             </div>
           </div>

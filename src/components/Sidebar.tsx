@@ -40,7 +40,18 @@ export default function Sidebar({ isOpen }: SidebarProps) {
         }}
       >
         <div className="p-3">
-          <h5 className="text-white mb-3">Smart Store</h5>
+          <div className="d-flex align-items-center justify-content-center mb-3 pt-2">
+            <img
+              src="/1.png"
+              alt="Logo"
+              style={{
+                width: 160,
+                height: 160,
+                objectFit: 'contain',
+                filter: 'brightness(0) invert(1)',
+              }}
+            />
+          </div>
           <hr className="text-white" />
           
           {sections.map(section => (

@@ -9,6 +9,7 @@ interface InputProps {
   required?: boolean;
   className?: string;
   id?: string;
+  autoComplete?: string;
 }
 
 export default function Input({
@@ -21,7 +22,8 @@ export default function Input({
   disabled,
   required = false,
   className = '',
-  id
+  id,
+  autoComplete
 }: InputProps) {
   const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
 
@@ -42,6 +44,7 @@ export default function Input({
         onKeyPress={onKeyPress}
         disabled={disabled}
         required={required}
+        autoComplete={autoComplete}
       />
     </div>
   );

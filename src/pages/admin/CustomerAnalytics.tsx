@@ -23,7 +23,7 @@ interface TopCustomer {
 }
 
 const CustomerAnalytics = () => {
-  const { Get } = useApi();
+  const { Get, getAPI } = useApi();
   const [topCustomers, setTopCustomers] = useState<TopCustomer[]>([]);
   const [selectedCustomer, setSelectedCustomer] = useState<CustomerAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,7 +35,7 @@ const CustomerAnalytics = () => {
   const fetchTopCustomers = async () => {
     setLoading(true);
     try {
-      const response = await Get('customer/top_customers/?limit=10');
+      const response = await Get(`${getAPI('customer')}top_customers/?limit=10`);
       const data = Array.isArray(response) ? response : response.results || [];
       setTopCustomers(data);
     } catch (error) {
@@ -48,7 +48,7 @@ const CustomerAnalytics = () => {
 
   const fetchCustomerAnalytics = async (customerId: string) => {
     try {
-      const response = await Get(`customer/${customerId}/analytics/`);
+      const response = await Get(`${getAPI('customer')}${customerId}/analytics/`);
       setSelectedCustomer(response);
     } catch (error) {
       console.error('Failed to fetch analytics', error);

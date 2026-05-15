@@ -49,7 +49,9 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
             <span className="navbar-toggler-icon"></span>
           </button>
         )}
-        <span className="navbar-brand mb-0 h1">OnTime</span>
+        <span className="navbar-brand mb-0 h1 d-flex align-items-center gap-2">
+          <img src="/1.png" alt="Logo" style={{ height: 32, objectFit: 'contain' }} />
+        </span>
         <div className="ms-auto d-flex align-items-center gap-3">
           {userInfo && (
             <div className="d-none d-md-block">

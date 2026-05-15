@@ -60,7 +60,7 @@ export const userSchema = {
     { name: "is_staff", label: "Is Staff", type: "switch" },
   ],
   showField: [
-    { key: "id", label: "ID" },
+    { key: "id", label: "ID", type: "rowIndex" },
     { key: "username", label: "Username" },
     { key: "email", label: "Email" },
     { key: "first_name", label: "First Name" },

@@ -44,27 +44,44 @@ const FormWithDrawer: React.FC<FormWithDrawerProps> = (props) => {
       <div
         className={`offcanvas offcanvas-${anchor} ${isOpen ? "show" : ""}`}
         tabIndex={-1}
-        style={{ visibility: isOpen ? "visible" : "hidden", width: anchor === "end" || anchor === "start" ? "500px" : "auto" }}
+        style={{
+          visibility: isOpen ? "visible" : "hidden",
+          width: anchor === "end" || anchor === "start" ? "460px" : "auto",
+          boxShadow: '-4px 0 24px rgba(0,0,0,0.10)',
+          borderLeft: '1px solid #e2e8f0',
+          position: 'fixed',
+          top: 0,
+          bottom: 0,
+          height: '100vh',
+          zIndex: 1055,
+        }}
       >
-        <div className="offcanvas-header">
-          <h5 className="offcanvas-title">
-            {data?.id ? updateFormTitle : createFormTitle}
-          </h5>
+        <div className="offcanvas-header border-bottom" style={{ padding: '20px 24px', background: '#fff' }}>
+          <div>
+            <h5 className="offcanvas-title fw-bold mb-0" style={{ color: '#0f172a', fontSize: '1.05rem' }}>
+              {data?.id ? updateFormTitle : createFormTitle}
+            </h5>
+            <p className="text-muted mb-0" style={{ fontSize: '0.8rem', marginTop: 2 }}>
+              {data?.id ? 'Update the details below' : 'Fill in the details below'}
+            </p>
+          </div>
           <button
             type="button"
             className="btn-close"
             onClick={handleCloseDrawer}
           ></button>
         </div>
-        <div className="offcanvas-body">
-          <Form
-            closeDrawer={handleCloseDrawer}
-            refreshData={props.refreshData}
-            submitBtnTitle={submitBtnTitle}
-            inputFields={props.inputFields}
-            api={props.api}
-            data={data}
-          />
+        <div className="offcanvas-body" style={{ padding: '24px', background: '#f8fafc' }}>
+          <div style={{ background: '#fff', borderRadius: 12, padding: '20px', border: '1px solid #e2e8f0' }}>
+            <Form
+              closeDrawer={handleCloseDrawer}
+              refreshData={props.refreshData}
+              submitBtnTitle={submitBtnTitle}
+              inputFields={props.inputFields}
+              api={props.api}
+              data={data}
+            />
+          </div>
         </div>
       </div>
 

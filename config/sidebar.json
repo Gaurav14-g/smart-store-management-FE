@@ -11,8 +11,6 @@
       { "label": "Billing",            "url": "/billing",            "icon": "receipt",         "section": "Operations" },
       { "label": "Sales Reports",      "url": "/sales-reports",      "icon": "graph-up",        "section": "Operations" },
       { "label": "Voice Commands",     "url": "/voice-commands",     "icon": "mic",             "section": "Operations" },
-      { "label": "Users",              "url": "/users",              "icon": "people",          "section": "Management" },
-      { "label": "Roles",              "url": "/roles",              "icon": "shield-lock",     "section": "Management" },
       { "label": "Settings",           "url": "/settings",          "icon": "gear",            "section": "Management" }
     ],
     "Owner": [
@@ -23,8 +21,6 @@
       { "label": "Billing",            "url": "/billing",            "icon": "receipt",         "section": "Operations" },
       { "label": "Sales Reports",      "url": "/sales-reports",      "icon": "graph-up",        "section": "Operations" },
       { "label": "Voice Commands",     "url": "/voice-commands",     "icon": "mic",             "section": "Operations" },
-      { "label": "Users",              "url": "/users",              "icon": "people",          "section": "Management" },
-      { "label": "Roles",              "url": "/roles",              "icon": "shield-lock",     "section": "Management" },
       { "label": "Settings",           "url": "/settings",          "icon": "gear",            "section": "Management" }
     ],
     "Manager": [
