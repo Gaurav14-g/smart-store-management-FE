@@ -117,7 +117,23 @@ const useApi = () => {
     }
   };
 
-  return { Post, Put, Patch, Get, Delete, getAPI, getHost };
+  const PostForm = async (api: string, formData: FormData) => {
+    if (!token) {
+      logOutUser('Please login to continue.');
+      throw new Error('No authentication token');
+    }
+    let _api = (getAPI(api).includes('undefined')) ? api : getAPI(api);
+    try {
+      const response = await axios.post(_api, formData, {
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
+      });
+      return response.data;
+    } catch (err) {
+      return handleAuthError(err);
+    }
+  };
+
+  return { Post, Put, Patch, Get, Delete, PostForm, getAPI, getHost };
 };
 
 export default useApi;
