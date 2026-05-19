@@ -51,6 +51,30 @@ const SalesReports = () => {
   const totalBills = report?.summary?.total_bills ?? 0;
   const avgOrder = totalBills > 0 ? totalSales / totalBills : 0;
 
+  const downloadCSV = () => {
+    if (!report) return;
+    const rows = [
+      ['#', 'Date', 'Customer', 'Staff', 'Items', 'Amount'],
+      ...report.bills.map((bill, i) => [
+        i + 1,
+        new Date(bill.bill_date).toLocaleDateString(),
+        bill.customer_name || 'Walk-in',
+        bill.user_name,
+        bill.items_count,
+        Number(bill.total_amount).toFixed(2),
+      ]),
+      ['', '', '', '', 'Total', Number(totalSales).toFixed(2)],
+    ];
+    const csv = rows.map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sales-report-${startDate}-to-${endDate}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <AdminLayout>
       {/* Header */}
@@ -150,7 +174,12 @@ const SalesReports = () => {
           <div className="card">
             <div className="card-header bg-dark text-white d-flex align-items-center justify-content-between">
               <span className="fw-semibold"><i className="bi bi-table me-2"></i>Bill Details</span>
-              <span className="badge bg-secondary">{report.bills.length} records</span>
+              <div className="d-flex align-items-center gap-2">
+                <span className="badge bg-secondary">{report.bills.length} records</span>
+                <button className="btn btn-sm btn-outline-light" onClick={downloadCSV}>
+                  <i className="bi bi-download me-1"></i>Download CSV
+                </button>
+              </div>
             </div>
             {report.bills.length === 0 ? (
               <div className="card-body text-center text-muted py-5">
